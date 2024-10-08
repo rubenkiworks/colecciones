@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.OptionalDouble;
+import java.util.function.Predicate;
+import java.util.function.ToDoubleFunction;
 
 /**
  * Hello world!
@@ -187,12 +189,64 @@ public class App {
         // Hay que instanciar un objeto de la clase filtro
         // Filtro filtro = new Filtro();
         //el tipo opciones es una cajita donde puede venir el tipo o null, protegiendote del null pointer exception
-        OptionalDouble optionalDouble =  elementosVarios.stream().filter(new Filtro()).mapToDouble(new Mapeador()).average();
+       
+        // OptionalDouble optionalDouble = elementosVarios.stream().filter(new Filtro()).mapToDouble(new Mapeador()).average();
 
-        double salarioPromedio;
+        // double salarioPromedio;
+
+        // if (optionalDouble.isPresent()) {
+        //     salarioPromedio = optionalDouble.getAsDouble();
+        // }
+
+        /* ¿Que es una clase Anonima? Es una expresion de clase. Es un tipo de clase que se declara y se 
+        instancia en el mismo sitio donde se va a consumir. Por lo general se utiliza para implementar 
+        interfaces aunque tambien se puede utilizar a partir de clases. */
+
+        /* Ejemplo:
+        * 
+        * Para ver la sintaxis: Consideremos la Interfaz Saludo
+        */
+
+        Saludo saludo = new Saludo() {
+            private String nombre;
+
+            @Override
+            public void hola(String nombre) {
+                this.nombre = nombre;
+                System.out.println("Hola holita " + this.nombre);
+            }
+            
+        };
+
+        saludo.hola("Ruben");
+
+        /*
+         * Ejercicio 1 
+         * 
+         * solucionar el ejemplo de calcular el salario promedio de los empleados del genero mujer utilizando clases anonimoas
+         * para implementar las interfaces funcionales que requieren los metodos filter y mapToDouble
+         */
+
+        OptionalDouble optionalDouble = elementosVarios.stream().filter(new Predicate<Object>() {
+            @Override
+            public boolean test(Object obj) {
+                return obj instanceof Empleado empleado && empleado.getGenero().equals(Genero.MUJER);
+            }
+    
+        }).mapToDouble(new ToDoubleFunction<Object>() {
+            @Override
+            public double applyAsDouble(Object obj) {
+                // Estamos usando un type casting para que el objeto sea un empleado obligatoriamente
+                return ((Empleado)obj).getSalario();
+            }
+        }).average();
+
+        double salarioPromedio = 0;
 
         if (optionalDouble.isPresent()) {
             salarioPromedio = optionalDouble.getAsDouble();
         }
+
+        System.out.println("El salario promedio es: " + salarioPromedio);
     }
 }
