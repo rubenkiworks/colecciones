@@ -2,6 +2,7 @@ package com.example;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -64,7 +65,7 @@ public class App {
         String[] arrayNombres = { "Marcos", "juan", "antonio" };
         // ¿Como convertir el array anterior a una lista de nombres?
         nombres = Arrays.asList(arrayNombres);
-        System.out.println(nombres);
+        // System.out.println(nombres);
         // ¿Que desventajas tiene crear una lista a partir de un array?
         // Que la lista resultante es de tamaño fijo, es decir, que no
         // le puedes agregar elementos con el metodo add(), posteriormente.
@@ -84,8 +85,10 @@ public class App {
         personas = Arrays.asList(personaArray);
 
         List<Persona> personas2 = new ArrayList<>();
-        personas2.add(Persona.builder().nombre("hghgh").genero(Genero.HOMBRE).build());
-        personas2.add(Persona.builder().nombre("jkjgh").genero(Genero.HOMBRE).build());
+        personas2.add(Persona.builder().nombre("Marcos").genero(Genero.HOMBRE).build());
+        personas2.add(Persona.builder().nombre("Ruben").genero(Genero.HOMBRE).build());
+        personas2.add(Persona.builder().nombre("Ellie").genero(Genero.MUJER).build());
+        personas2.add(Persona.builder().nombre("Laira").genero(Genero.MUJER).build());
 
         elementosVarios = new ArrayList<>();
         elementosVarios.add(Persona.builder().nombre("hghgh").genero(Genero.HOMBRE).build());
@@ -94,5 +97,54 @@ public class App {
         elementosVarios.add(Estudiante.builder().nombre("hghgh").genero(Genero.HOMBRE)
                 .beca(2300).totalAsignaturas(11).build());
 
+        /*
+         * Recorrer colecciones (Traversing Collections)
+         * 
+         * 1. Utilizando un iterador (Interfaz Iterator), es la unica forma
+         * de eliminar un elemento de la coleccion mientras se recorre.
+         * 
+         * 2. Utilizando un for mejorado.
+         * 
+         * 3. La FORMA SUGERIDA (RECOMENDADA). Utilizando Operaciones de Agregado
+         * (Metodos
+         * de la clase Stream, las expresiones Lambda y los Metodos por referencia).
+         */
+
+        /*
+         * Utilizando un iterador, vamos a recorrer la coleccion de personas2, para
+         * eliminar
+         * las personas del genero HOMBRE
+         */
+
+        Iterator<Persona> iterator = personas2.iterator();
+        // System.out.println(personas2);
+        while (iterator.hasNext()) {
+            if (iterator.next().getGenero() == Genero.HOMBRE) {
+                iterator.remove();
+            }
+        }
+        // System.out.println(personas2);
+
+        /*
+         * Ejercicio # 1
+         * 
+         * Utilizando un Iterador
+         * 
+         * Recorrer la coleccion de personas2 y mostrar las personas del genero HOMBRE,
+         * que ademas tengan
+         * un nombre con una longitud igual o menor a 5 caracteres
+         */
+        List<Persona> personas3 = new ArrayList<>();
+        personas3.add(Persona.builder().nombre("Marcos").genero(Genero.HOMBRE).build());
+        personas3.add(Persona.builder().nombre("Ruben").genero(Genero.HOMBRE).build());
+        personas3.add(Persona.builder().nombre("Ellie").genero(Genero.MUJER).build());
+        personas3.add(Persona.builder().nombre("Laira").genero(Genero.MUJER).build());
+        Iterator<Persona> i = personas3.iterator();
+        while (i.hasNext()) {
+            Persona persona = i.next();
+            if (persona.getGenero().equals(Genero.HOMBRE) && persona.getNombre().length() <= 5) {
+                System.out.println(persona.getNombre());
+            }
+        }
     }
 }
