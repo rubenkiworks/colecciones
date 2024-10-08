@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.OptionalDouble;
-import java.util.function.Predicate;
-import java.util.function.ToDoubleFunction;
 
 /**
  * Hello world!
@@ -227,7 +225,7 @@ public class App {
          * para implementar las interfaces funcionales que requieren los metodos filter y mapToDouble
          */
 
-        OptionalDouble optionalDouble = elementosVarios.stream().filter(new Predicate<Object>() {
+        /* OptionalDouble optionalDouble = elementosVarios.stream().filter(new Predicate<Object>() {
             @Override
             public boolean test(Object obj) {
                 return obj instanceof Empleado empleado && empleado.getGenero().equals(Genero.MUJER);
@@ -240,6 +238,18 @@ public class App {
                 return ((Empleado)obj).getSalario();
             }
         }).average();
+
+        double salarioPromedio = 0;
+
+        if (optionalDouble.isPresent()) {
+            salarioPromedio = optionalDouble.getAsDouble();
+        }
+
+        System.out.println("El salario promedio es: " + salarioPromedio); */
+
+        OptionalDouble optionalDouble = elementosVarios.stream().
+        filter((Object obj) -> obj instanceof Empleado empleado && empleado.getGenero().equals(Genero.MUJER)).
+        mapToDouble((Object obj) -> ((Empleado)obj).getSalario()).average();
 
         double salarioPromedio = 0;
 
