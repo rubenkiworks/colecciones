@@ -91,11 +91,15 @@ public class App {
         personas2.add(Persona.builder().nombre("Laira").genero(Genero.MUJER).build());
 
         elementosVarios = new ArrayList<>();
-        elementosVarios.add(Persona.builder().nombre("hghgh").genero(Genero.HOMBRE).build());
-        elementosVarios.add(Empleado.builder().nombre("hghgh").genero(Genero.HOMBRE)
+        elementosVarios.add(Persona.builder().nombre("Miguel").genero(Genero.HOMBRE).build());
+        elementosVarios.add(Empleado.builder().nombre("Manuel").genero(Genero.HOMBRE)
                 .departamento(Departamento.INFORMATICA).salario(1200.5).build());
-        elementosVarios.add(Estudiante.builder().nombre("hghgh").genero(Genero.HOMBRE)
-                .beca(2300).totalAsignaturas(11).build());
+        elementosVarios.add(Estudiante.builder().nombre("Ruben").genero(Genero.HOMBRE)
+                .beca(2300).totalAsignaturas(10).build());
+        elementosVarios.add(Estudiante.builder().nombre("Marcos").genero(Genero.HOMBRE)
+                .beca(11500).totalAsignaturas(11).build());
+        elementosVarios.add(Estudiante.builder().nombre("Juan").genero(Genero.HOMBRE)
+                .beca(9500).totalAsignaturas(9).build());
 
         /*
          * Recorrer colecciones (Traversing Collections)
@@ -146,5 +150,26 @@ public class App {
                 System.out.println(persona.getNombre());
             }
         }
+
+        //Utilizando el for mejorado, recorrer la lista elementosVarios y calcular el promedio de las becas
+        // vsmos a emplear pattern matching
+
+        double sumatoriaBecas = 0;
+        int studentCounter = 0;
+        double promedioBecas = 0;
+
+        for (Object obj : elementosVarios) {
+            // Como saber de que clase es el objeto que sacamos en cada iteracion
+            // Utilizando el operador instanceof y tambien pattern matching
+            if(obj instanceof Estudiante estudiante){
+                sumatoriaBecas += estudiante.getBeca();
+                studentCounter++;
+            }
+
+        }
+
+        promedioBecas = sumatoriaBecas / studentCounter;
+        System.out.println("El promdio de becas es: " + promedioBecas);
+
     }
 }
