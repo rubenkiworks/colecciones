@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.OptionalDouble;
 
 /**
  * Hello world!
  */
 public class App {
+
     public static void main(String[] args) {
 
         /*
@@ -24,11 +26,9 @@ public class App {
          * 
          * 
          */
-
         // La Interface List es una de las colecciones mas utilizadas,
         // permite almacenar elementos duplicados, al igual que todas las demas
         // interfaces es Generica.
-
         // ¿Que es la Genericidad? Es lo que permite implementar clases e interfaces
         // que trabajen con tipos de datos diferentes, pero en cada momento solo
         // pueden trabar con un solo tipo de dato, o datos relacionados.
@@ -39,13 +39,10 @@ public class App {
         // ¿Que ventajas nos ofrece la genericidad? Que los errores se detectan
         // muy facilmente en tiempo de compilacion, en lugar de ejecucion donde
         // seria mucho mas dificil de detectar.
-
         // Declaracion de colecciones
-
         List<String> nombres;
 
         // List<String> nombres2;
-
         List<Persona> personas;
 
         List<?> elementosDeCualquierTipo;
@@ -62,7 +59,7 @@ public class App {
         // metodos.
         List<? extends Persona> elementVar2;
 
-        String[] arrayNombres = { "Marcos", "juan", "antonio" };
+        String[] arrayNombres = {"Marcos", "juan", "antonio"};
         // ¿Como convertir el array anterior a una lista de nombres?
         nombres = Arrays.asList(arrayNombres);
         // System.out.println(nombres);
@@ -78,8 +75,8 @@ public class App {
         nombres3.add("HJJHJHJ");
 
         Persona[] personaArray = {
-                Persona.builder().nombre("hghgh").genero(Genero.HOMBRE).build(),
-                Persona.builder().nombre("jkjgh").genero(Genero.OTRO).build()
+            Persona.builder().nombre("hghgh").genero(Genero.HOMBRE).build(),
+            Persona.builder().nombre("jkjgh").genero(Genero.OTRO).build()
         };
 
         personas = Arrays.asList(personaArray);
@@ -100,7 +97,12 @@ public class App {
                 .beca(11500).totalAsignaturas(11).build());
         elementosVarios.add(Estudiante.builder().nombre("Juan").genero(Genero.HOMBRE)
                 .beca(9500).totalAsignaturas(9).build());
-
+        elementosVarios.add(Empleado.builder().nombre("Miriam").genero(Genero.MUJER)
+                .departamento(Departamento.INFORMATICA).salario(1100.5).build());
+        elementosVarios.add(Empleado.builder().nombre("Alba").genero(Genero.MUJER)
+                .departamento(Departamento.INFORMATICA).salario(1470.21).build());
+        elementosVarios.add(Empleado.builder().nombre("Laura").genero(Genero.MUJER)
+                .departamento(Departamento.INFORMATICA).salario(1700.89).build());
         /*
          * Recorrer colecciones (Traversing Collections)
          * 
@@ -114,12 +116,11 @@ public class App {
          * de la clase Stream, las expresiones Lambda y los Metodos por referencia).
          */
 
-        /*
+ /*
          * Utilizando un iterador, vamos a recorrer la coleccion de personas2, para
          * eliminar
          * las personas del genero HOMBRE
          */
-
         Iterator<Persona> iterator = personas2.iterator();
         // System.out.println(personas2);
         while (iterator.hasNext()) {
@@ -153,7 +154,6 @@ public class App {
 
         //Utilizando el for mejorado, recorrer la lista elementosVarios y calcular el promedio de las becas
         // vsmos a emplear pattern matching
-
         double sumatoriaBecas = 0;
         int studentCounter = 0;
         double promedioBecas = 0;
@@ -161,7 +161,7 @@ public class App {
         for (Object obj : elementosVarios) {
             // Como saber de que clase es el objeto que sacamos en cada iteracion
             // Utilizando el operador instanceof y tambien pattern matching
-            if(obj instanceof Estudiante estudiante){
+            if (obj instanceof Estudiante estudiante) {
                 sumatoriaBecas += estudiante.getBeca();
                 studentCounter++;
             }
@@ -171,5 +171,28 @@ public class App {
         promedioBecas = sumatoriaBecas / studentCounter;
         System.out.println("El promdio de becas es: " + promedioBecas);
 
+        /* 
+            Utilizando Operaciones de Agregado, que implica el uso de:
+
+            1. Metodos de la clase Stream: 
+            2. Concepto de Tuberia o pipeline, es un conjunto de metodos de agregados
+            3. Interfaces Funcionales
+            4. Clase Anonima
+            5. Expresiones Lambda
+            6. Metodos por referencia
+
+            Recorrer la coleccion de elementosVarios para obtener el salario promedio de los empleados
+            * del genero MUJER
+         */
+        // Hay que instanciar un objeto de la clase filtro
+        // Filtro filtro = new Filtro();
+        //el tipo opciones es una cajita donde puede venir el tipo o null, protegiendote del null pointer exception
+        OptionalDouble optionalDouble =  elementosVarios.stream().filter(new Filtro()).mapToDouble(new Mapeador()).average();
+
+        double salarioPromedio;
+
+        if (optionalDouble.isPresent()) {
+            salarioPromedio = optionalDouble.getAsDouble();
+        }
     }
 }
